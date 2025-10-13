@@ -1,0 +1,192 @@
+\documentclass[hidelinks]{aquila-doc}
+
+% For removing page numbers
+% \pagenumbering{gobble}
+
+% Aquila does not come with a built-in reference manager
+% You can choose your own package and here we uses biblatex
+\usepackage{biblatex}
+\addbibresource{sources.bib}
+% If you are partial to natbib you can use it too
+% \usepackage[numbers]{natbib}
+% \bibliographystyle{plainnat}
+
+\title{\aquila is a modern template for \LaTeX documents}
+\author{}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+While you can still write text across the entire document, \aquila uses the \command{goldencolumn} command to write content in asymmetric columns by default.
+The right column is widest and used for main content.
+The left column can be used for any additional content that is not integral to the main story, but can clarify the exposition.
+
+\goldencolumn{
+    \section{Overview of the basic principles of an \aquila document}
+
+    You have now entered the first section of the main story of the document.
+    All content should be placed inside a \command{goldencolumn}, which includes every \command{section} and \command{subsection}.
+
+    \aquila promotes the use of whitespace for a clearer and cleaner exposition.
+    Whitespace becomes available by leaving open a smaller left column that can be used at the writer's leisure.
+    The column can give additional insights, clarifications, comments etc.
+    These additions are easily added through the \command{comment}.
+
+    \comment{
+    Content in the \command{comment} environment will always align with the content that follows right after the environment.
+    }
+
+    In other words, a \command{comment} appears right before the text you want to comment.\footnote{Footnotes should be used sparingly as most of their functionality should be covered by comments.}
+
+    Mathematics in \aquila uses sans-serif fonts just like any other text.
+    For example, the mathematical facts that
+    \begin{align}
+        \int_{-\infty}^{\infty}\
+        e^{-x^2}
+        \diff x
+        =
+        \sqrt\pi
+        \quad
+        \text{and}
+        \quad
+        e^{i \pi} + 1 = 0,
+    \end{align}
+    which illustrate the relationship between $\pi$ and $e$.
+
+    While the wider default column of \aquila provides more space for mathematical expressions than a traditional two-column layout, it is still sometimes insufficient.
+    For equations that are unavoidably longer or deserve central attention, you can use the \command{spanalign} command instead, e.g. the beautiful Einstein field equations~\cite{einstein1916}
+    \spanalign{
+        G_{\mu \nu} + \Lambda g_{\mu \nu}
+        =
+        \frac{8\pi G}{c^4} T_{\mu \nu}
+    }
+    For regular pictures and figures that should span across columns, you can use the starred version of the \texttt{figure} environment.
+
+    \subsection{Tikz can be a lot of fun}
+
+    \comment{\shift{Overview}}
+
+    Aquila promotes using \texttt{tikz} as a language for clean graphics.
+    Do to so, it provides a number of default node types and arrow styles, as well as useful commands for pointing at text.
+    These macros, settings and commands should make using \texttt{tikz} at least a little less cumbersome as well as provide consistent graphical representations of your figures.
+    One simple example is a \accent{Bayesian network}.
+
+    \comment{
+    \begin{tikzpicture}
+        \node[circnode] (b) {\texttt{b}};
+        \node[circnode, right=3em of b.east] (e) {\texttt{e}};
+        \node[between=b and e] (middle) {};
+        \node[circnode, below=2em of middle] (a) {\texttt{a}};
+
+        \draw[thinpath] (b.south) |- (a.west);
+        \draw[thinpath] (e.south) |- (a.east);
+    \end{tikzpicture}
+    }
+
+    \begin{example}[Bayesian network]
+        Let \texttt{b}, \texttt{e} and \texttt{a} be three random variables that represent the occurrence of a burglary, earthquake or alarm, respectively.
+        Their dependencies are represented in the probabilistic graphical model (PGM) on the left.
+    \end{example}
+
+    The \texttt{tikz} code of this example shows a number of frequently used macros.
+    It uses \texttt{circnode}'s as circular nodes traditional in a PGM as well as \texttt{thinpath}'s to draw the dependencies.
+    Placing such nodes and arrows can quickly become convoluted or unorganised, so we recommend using the \texttt{between} macro as well as only relative distances to define intermediate nodes.
+    This practice should help maintain consistent alignment as well as overview.
+    Specificying cardinal directions, \eg \texttt{east} or \texttt{south}, is also recommended.
+
+    Apart from graphical models or flowcharts, \texttt{tikz} is also used in aquila to \accent{connect parts of mathematics to their textual representation}.
+    These connections are situational and don't always work, but can help with clarity of exposition.
+
+    \comment{
+    Where \colouraccentnode{orange_red}{recursive samples}{recursion_txt} are \colouraccentnode{celadon_blue}{transitioned}{transition_txt} and then \colouraccentnode{jungle_green}{reweighed by observations}{observation_txt}.
+    }
+
+    For instance, consider the recursive particle filtering equation
+    \begin{align}
+        \int
+        \colourmathnode{jungle_green}{
+            p(\vector{Z}_{t + 1} \mid \vector{X}_{t + 1})
+        }{observation}
+        \cdot
+        \colourmathnode{celadon_blue}{
+            p(\vector{X}_{t + 1} \mid \vector{x}_{t})
+        }{transition}
+        \cdot
+        \colourmathnode{orange_red}{
+            p(\vector{x}_t \mid \vector{Z}_{0:t})
+        }{recursion}
+        \diff\vector{x}_t
+    \end{align}
+    The two most important macros here are \command{colouraccentnode} and \command{colourmathnode} that turn either a piece of accented text or a piece of mathematics into a \texttt{tikz} node with a given name.
+    These nodes can then be connected in an \texttt{overlaypicture} if one desires, although utilising only colour can already be clarifying.
+    While connecting text and mathematics does require some finetuning, the result can be quite pleasing.
+    In case connections are not desired, then one can simply use \command{colouraccent} or \command{colourmath} instead.
+
+    \begin{overlaypicture}
+        \draw[thinline, jungle_green]
+        (observation_txt) |-
+        ([yshift=-0.75em]observation.south) --
+        (observation.south);
+        \draw[thinline, celadon_blue]
+        (transition_txt.east) --
+        ([xshift=0.75em]transition_txt.east) |-
+        ([yshift=1em]transition.north) --
+        (transition.north);
+        \draw[thinline, orange_red]
+        (recursion_txt.north) |-
+        ([yshift=1em, xshift=-8em]recursion_txt.north) |-
+        ([yshift=-1em]recursion.south) --
+        (recursion.south);
+    \end{overlaypicture}
+
+    \subsection{Other nice things to know}
+
+    Referencing a series of words can be quite useful.
+    Say for instance that you have the following research question.
+
+    \comment{\shift{Research question I\namelabel{Research question I}}}
+
+    \begin{flushright}
+        \qemph{How to write a clean document?}
+
+    \end{flushright}
+    If you like to refer to this question with a full link, then you can do so my just writing that \ref{Research question I} is quite important.
+
+    Other things will be added here in the future.
+
+    \section{Section headers describe the section content in a short sentence}
+
+    Before we end this example, a short note on how to generally approach writing in \aquila.
+    When writing, each paragraph should start with a topical sentence roughly describing the content of the paragraph.
+    Each subsequent sentence then goes into more detail by either going deeper into the object of the previous sentence or adding more information to the object of the previous sentence.
+    After these sentences, you can then get to the main point of the paragraph again if applicable.
+
+    \paragraph{Very important paragraphs can be emphasised by the \command{paragraph} command to give them more visibility.}
+    Sometimes a point is so important that you really want to make sure people remember or that it is noticed even when skimming through the document.
+    For that, \command{paragraph} puts the topical sentence in bold.
+}
+
+% I am partial to not having references directly follow the text
+\newpage
+
+% For the default biblatex
+\printbibliography
+% For natbib
+% \bibliography{sources}
+
+\newpage
+\appendix
+
+\label{app:test}
+
+\goldencolumn{
+    \section{The appendix contains the juicy details of your work that didn't make the cut}
+
+    This part is where the fun really begins by explaining all the gritty details of your work that were too obscure to be entertained in the main story.
+}
+
+% \bibliography{sources}
+
+\end{document}
