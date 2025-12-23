@@ -22,7 +22,7 @@
 
 \footnotelayout{m}
 
-\newcommand{\aquila}{\textcolor{KULeuvenLichtblauw}{\texttt{Aquila}}\xspace}
+\newcommand{\aquila}{\textcolor{minty-blue}{\texttt{Aquila}}\xspace}
 
 \renewcommand{\baselinestretch}{1.1}
 \tolerance = 5000
@@ -268,7 +268,7 @@
 \definecolor{softer_black}{HTML}{2A2A2A}
 \definecolor{softest_black}{HTML}{707070}
 
-\definecolor{KULeuvenLichtblauw}{cmyk}{.59,.07,.00,.00}
+\definecolor{minty-blue}{cmyk}{.59,.07,.00,.00}
 \definecolor{flair_purple}{HTML}{36337D}
 
 
