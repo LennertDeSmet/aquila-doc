@@ -242,6 +242,9 @@
 \newcommand{\colouraccent}[2]{\textcolor{#1}{\textbf{#2}}}
 \newcommand{\colourmath}[2]{\colournode{#1}{\ensuremath{#2}}{}{0.25em}}
 
+\newcommand{\step}{\vspace{2em}}
+\newcommand{\babystep}{\vspace{1em}}
+
 %%% Defining the aquila colour palette
 \RequirePackage{xcolor}
 
