@@ -14,6 +14,7 @@
 \RequirePackage{amssymb,amsthm}
 \RequirePackage{amsmath}
 \RequirePackage{hyperref}
+\RequirePackage{booktab}
 
 %%% Setting up columns, spacing and general document stuff
 \RequirePackage[skip=1em]{parskip}
